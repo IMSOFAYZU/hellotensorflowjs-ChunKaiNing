@@ -1,0 +1,19 @@
+{
+  "name": "hellotensorflowjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lendle1028/HelloTensorflowJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lendle1028/HelloTensorflowJS/issues"
+  },
+  "homepage": "https://github.com/lendle1028/HelloTensorflowJS#readme"
+}
