@@ -43,7 +43,22 @@ function createModel() {
  * 將資料轉成 tensor 並且標準化
  */
 function prepareData(data) {
-    
+    let inputs = tf.tensor(data.map(d => d.horsepower));
+    let outputs = tf.tensor(data.map(d => d.mpg));
+    const inputMax = inputs.max();
+    const inputMin = inputs.min();
+    const outputMax = outputs.max();
+    const outputMin = outputs.min();
+    let normalizedInputs = inputs.sub(inputMin).div(inputMax.sub(inputMin));
+    let normalizedOutputs = outputs.sub(outputMin).div(outputMax.sub(outputMin));
+    return {
+        normalizedInputs,
+        normalizedOutputs,
+        inputMax,
+        inputMin,
+        outputMax,
+        outputMin
+    };
 }
 /**
  * 
