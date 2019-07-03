@@ -65,7 +65,13 @@ function prepareData(data) {
  * 設定參數並進行訓練
  */
 async function trainModel(model, input, output) {
-    
+    model.compile({
+        optimizer: tf.train.adam(),
+        loss: tf.losses.meanSquaredError,
+        metrics: ['mse'],
+    });
+    const batchSize = 28;
+    const epochs = 50;
 }
 /**
  * 帶入測試資料，測試模型
