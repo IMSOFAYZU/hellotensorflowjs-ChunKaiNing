@@ -74,7 +74,14 @@ async function trainModel(model, input, output) {
     const epochs = 50;
     const history = await model.fit(input, output, {
         batchSize,
-        epochs
+        epochs,
+        callbacks: tfvis.show.fitCallbacks(
+            { name: 'Training Performance' },
+            ['loss', 'mse'],
+            {
+                'callbacks': ['onEpochEnd']
+            }
+        )
     });
     console.log("done");
     console.log(history);
