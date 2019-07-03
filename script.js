@@ -72,6 +72,12 @@ async function trainModel(model, input, output) {
     });
     const batchSize = 28;
     const epochs = 50;
+    const history = await model.fit(input, output, {
+        batchSize,
+        epochs
+    });
+    console.log("done");
+    console.log(history);
 }
 /**
  * 帶入測試資料，測試模型
