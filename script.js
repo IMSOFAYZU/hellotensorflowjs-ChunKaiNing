@@ -65,12 +65,63 @@ function prepareData(data) {
  * 設定參數並進行訓練
  */
 async function trainModel(model, input, output) {
-    
+    model.compile({
+        optimizer: tf.train.adam(),
+        loss: tf.losses.meanSquaredError,
+        metrics: ['mse'],
+    });
+    const batchSize = 28;
+    const epochs = 50;
+    const history = await model.fit(input, output, {
+        batchSize,
+        epochs,
+        callbacks: tfvis.show.fitCallbacks(
+            { name: 'Training Performance' },
+            ['loss', 'mse'],
+            {
+                height: 200,
+                callbacks: ['onEpochEnd']
+            }
+        )
+    });
+    console.log("done");
+    console.log(history);
 }
-/**
- * 帶入測試資料，測試模型
- */
+
 function testModel(model, inputMin, inputMax, outputMin, outputMax, data) {
-    
+    const xs = tf.linspace(0, 1, 100);
+    const preds = model.predict(xs);
+    const unNormXs = xs
+        .mul(inputMax.sub(inputMin))
+        .add(inputMin);
+
+    const unNormPreds = preds
+        .mul(outputMax.sub(outputMin))
+        .add(outputMin);
+
+    let newXs=unNormXs.dataSync();//轉成陣列
+    let newPreds=unNormPreds.dataSync();
+
+    const predictedPoints = new Array();
+    for(let i=0; i<newXs.length; i++){
+        predictedPoints.push({
+            x: newXs[i],
+            y: newPreds[i]
+        });
+    }
+
+    const originalPoints = data.map(d => ({
+        x: d.horsepower, y: d.mpg,
+    }));
+
+    tfvis.render.scatterplot(
+        {name: 'Model Predictions vs Original Data'}, 
+        {values: [originalPoints, predictedPoints], series: ['original', 'predicted']}, 
+        {
+          xLabel: 'Horsepower',
+          yLabel: 'MPG',
+          height: 300
+        }
+      );
 }
 document.addEventListener('DOMContentLoaded', run);
